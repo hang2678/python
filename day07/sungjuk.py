@@ -26,10 +26,10 @@ def selectList(searchUser):
         selectSql = """
         SELECT 
             idx, name, kor, eng, mat, (kor+eng+mat) as total, (kor+eng+mat)/3 as average
-        FROM sungjuk WHERE name=%s
+        FROM sungjuk WHERE name LIKE %s
         ORDER BY total DESC
         """
-        cursor.execute(selectSql, searchUser)
+        cursor.execute(selectSql, '%' + searchUser + '%')
     
     rows = cursor.fetchall()
     return rows
@@ -38,7 +38,7 @@ def addData(data):  #['홍길동','100','200','300']
     insertSql = """INSERT INTO sungjuk(name, kor, eng, mat, reg_date)
                     VALUES(%s, %s, %s, %s, NOW())"""
 
-    cursor.exete(insertSql, (data[0], data[1], data[2], data[3]))
+    cursor.execute(insertSql, (data[0], data[1], data[2], data[3]))
     conn.commit()
     print('## 사용자 정보 추가 성공!')
     
