@@ -6,7 +6,6 @@ conn = pymysql.connect(host='127.0.0.1', user='root', password='',
 cursor = conn.cursor(pymysql.cursors.DictCursor)
 
 def displaySungjuk(searchUser):
-    # DB에서 데이터 조회 
     rows = selectList(searchUser)
     for row in rows:
         print("{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(
