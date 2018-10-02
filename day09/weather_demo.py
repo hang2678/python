@@ -19,13 +19,16 @@ for location in soup.select('location'): # select, select_one 원하는 값 추�
         data = location.select('data')
         #print('도시:', location.select_one('city').string)
         city = location.select_one('city').string
-        for d in data:
-            # print('날짜:', d.select_one('tmef').string, end='\t')
-            # print('날씨:', d.select_one('wf').string, end='\t')
-            # print('최저기온:', d.select_one('tmn').string, end='\t')
-            # print('최고기온:', d.select_one('tmx').string, end='\t')
-            # print()
 
+        # 0) 기존 데이터 삭제 (같은 날짜의 데이터만)
+        delSql = """
+            delete from weather
+            where fc_date between date(%s) and date(%s)
+        """
+        cursor.execute(delSql, (data[0].select_one('tmef').string, 
+                                data[len(data) - 1].select_one('tmef').string))
+        print("### 3. 기존 날씨정보 삭제 완료 ###")
+        for d in data: # 13 10/5 ~ 10/12 
             # 1) Weather 객체 생성 (13개) -> DB저장
             weather = Weather(1, city, d.select_one('tmef').string,
                               d.select_one('wf').string, d.select_one('tmn').string,
@@ -38,7 +41,7 @@ for location in soup.select('location'): # select, select_one 원하는 값 추�
                                 weather.description, weather.temp_min, weather.temp_max))
             
         conn.commit()
-        print('### 3. {0} 데이터 저장 완료 ###'.format(city))
+        print('### 4. {0} 데이터 저장 완료 ###'.format(city))
         break
 
 cursor.close()
