@@ -1,17 +1,19 @@
+# 성적관리 프로그램 (DB연동, 객체 모델링 포함)
 import pymysql
+from student import Student
 
 conn = pymysql.connect(host='127.0.0.1', user='root', password='', 
                      db='test_python', charset='utf8') 
-#cursor = conn.cursor()  # array base cusor(list) -> dictionary (key, value)
 cursor = conn.cursor(pymysql.cursors.DictCursor)
 
 def displaySungjuk(searchUser):
-    rows = selectList(searchUser)
-    print(rows)
-    print(type(rows))
-    for row in rows:
-        print("{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(
-            row['name'],row['kor'],row['eng'],row['mat'],row['total'],row['average']))
+    students = selectList(searchUser)
+    
+    for student in students:
+        # print("{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(
+        #     student.name, student.kor, student.eng, student.mat, 
+        #     student.average))
+        print(student)
            
 def selectList(searchUser):
     if len(searchUser) == 0:
@@ -33,9 +35,15 @@ def selectList(searchUser):
         """
         cursor.execute(selectSql, '%' + searchUser + '%')
     
-    rows = cursor.fetchall()
+    rows = cursor.fetchall() # list
     # rows -> Student object 변환 (Student class 생성)
-    return rows
+    students = []
+    for row in rows:
+        student = Student(row['name'], row['kor'], row['eng'], row['mat'],
+                          row['total'], row['average'])
+        students.append(student)
+
+    return students
 
 def addData(data):  #['홍길동','100','200','300']
     insertSql = """INSERT INTO sungjuk(name, kor, eng, mat, reg_date)

@@ -1,4 +1,5 @@
 # member.py
+# Entity
 class Member:
     def __init__(self, name, id, pwd):
         self.name = name
@@ -20,6 +21,7 @@ class Member:
     def settotal_amount(self, amount):
         self.total_amount += amount
 
+class Shopping:
     def login(self, id, pwd):
         print('{0}로 로그인 되었다.'.format(id))
         # DB check with ID, PWD
@@ -40,15 +42,12 @@ class Member:
     def purchase_from_cart(self):
         for item in self.cart:
             self.purchase_direct(item)
+        
+        self.cart.clear()
 
     def purchase_direct(self, item):
-        # 1. 재고 파악 -> 업데이트
-        # 2. 결제
-        # 3. 포인트 처리 (적립, 사용...)
-        # 4. 상품 상태를 변경 (준비중, 발송중, 배송중, 배송완료)
-        #    준비중 상태로 설정
-        self.point += 10 * 0.05
-        self.total_amount += 1000
+        self.point = item.getprice() * 0.05 * (item.getqty())
+        self.total_amount += (item.getprice() * item.getqty())
         self.purchased_list.append(item)
         pass
 
