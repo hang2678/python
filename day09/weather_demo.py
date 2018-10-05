@@ -27,6 +27,7 @@ for location in soup.select('location'): # select, select_one 원하는 값 추�
         """
         cursor.execute(delSql, (data[0].select_one('tmef').string, 
                                 data[len(data) - 1].select_one('tmef').string))
+        
         print("### 3. 기존 날씨정보 삭제 완료 ###")
         for d in data: # 13 10/5 ~ 10/12 
             # 1) Weather 객체 생성 (13개) -> DB저장
