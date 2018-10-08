@@ -20,7 +20,7 @@ print("전체 " + str(maximum) + " 개의 페이지가 있습니다.")
 all_source = ''
 
 for page_number in range(1, maximum + 1):
-    url = 'https://land.naver.com/news/region.nhn?page=' + str(page_number)
+    url = 'https://land.naver.com/news/field.nhn?page=' + str(page_number)
     response = requests.get(url)
     all_source = all_source + response.text
 
