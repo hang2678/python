@@ -16,3 +16,5 @@ element.send_keys(user_id)
 element = driver.find_element_by_name('pass')
 element.send_keys(user_pwd)
 element.send_keys(Keys.RETURN)
+
+# 로그아웃 
